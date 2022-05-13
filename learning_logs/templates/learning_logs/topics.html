@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Topics</title>
+</head>
+<body>
+{% extends "learning_logs/base.html" %}
+{% load bootstrap4 %}
+{% block page_header %}
+    <h1>
+        Games Lists
+    </h1>
+{% endblock page_header %}
+
+{% block content %}
+<ul>
+
+</ul>
+<p>
+    <a class="btn btn-lg btn-primary" href="{% url 'learning_logs:new_topic' %}" role="button">Add a new game</a>
+</p>
+
+<form action="{% url 'learning_logs:topics' %}" method="post" class="form">
+        {% csrf_token %}
+        <input type="text" name="search" class="form-control mb-4" placeholder="在这里检索您的游戏...">
+</form>
+
+{% for topic in topics %}
+    <div class="card mb-3">
+        <h4 class="card-header">
+            <a href="{% url 'learning_logs:topic' topic.id %}">{{ topic }}</a>
+            <small class="navbar-nav mul-auto">{{ topic.date_added|date:'Y-m-d   ,  H:i' }}</small>
+        </h4>
+    </div>
+{% empty %}
+<h3>
+    No topics have been added yet.
+</h3>
+{% endfor %}
+{% endblock content %}
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Topic</title>
+</head>
+<body>
+{% extends 'learning_logs/base.html' %}
+
+{% block page_header %}
+  <h3>{{ topic }}</h3>
+{% endblock page_header %}
+
+{% block content %}
+  <p>
+    <a class="btn btn-lg btn-primary" href="{% url 'learning_logs:new_entry' topic.id %}" role="button">Add new entry</a>
+  </p>
+<form action="{% url 'learning_logs:topic' topic.id %}" method="post" class="form">
+        {% csrf_token %}
+        <input type="text" name="search" class="form-control mb-4" placeholder="在这里检索您的条目...">
+</form>
+    {% for entry in entries %}
+    <div class="card mb-3">
+      <h4 class="card-header">
+        {{ entry.date_added|date:'Y-m-d   ,  H:i' }}
+        <small>
+          <a href="{% url 'learning_logs:edit_entry' entry.id %}">
+            Edit now &raquo;
+          </a>
+        </small>
+      </h4>
+      <div class="card-body">
+        <h5>
+          Text:
+        </h5>
+          {{ entry.text|linebreaks }}
+        <h5>
+          Days:
+        </h5>
+          {{ entry.key_days|linebreaks }}
+        <h5>
+          User retention:
+        </h5>
+          {{ entry.user_retention|linebreaks }}
+      </div>
+    </div>
+    {% empty %}
+      <p>There are no entries for this topic yet.</p>
+    {% endfor %}
+{% endblock content %}
+</body>
+</html>
