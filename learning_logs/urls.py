@@ -15,5 +15,14 @@ urlpatterns = [
     # 用于添加新条目的页面
     path('new_entry/<int:topic_id>/', views.new_entry, name='new_entry'),
     #用于编辑条目的页面
-    path('edit_entry/<int:entry_id>/',views.edit_entry,name='edit_entry')
+    path('edit_entry/<int:entry_id>/',views.edit_entry,name='edit_entry'),
+    #用于添加middle条目的页面
+    path('new_entry_middle/<int:topic_id>/',views.new_entry_middle,name='new_entry_middle'),
+    #用于添加end条目的页面
+    path('new_entry_end/<int:topic_id>/',views.new_entry_end,name='new_entry_end'),
+    # 用于编辑middle条目的页面
+    path('edit_entry_middle/<int:entry_id>/', views.edit_entry_middle, name='edit_entry_middle'),
+    # 用于编辑end条目的页面
+    path('edit_entry_end/<int:entry_id>/', views.edit_entry_end, name='edit_entry_end'),
 ]
+

@@ -13,13 +13,34 @@
 
 {% block content %}
   <p>
-    <a class="btn btn-lg btn-primary" href="{% url 'learning_logs:new_entry' topic.id %}" role="button">Add new entry</a>
+    <a class="btn btn-lg btn-primary" href="{% url 'learning_logs:new_entry' topic.id %}" role="button">Add new BEGIN entry</a>
+    <a class="btn btn-lg btn-primary" href="{% url 'learning_logs:new_entry_middle' topic.id %}" role="button">Add new MIDDLE entry</a>
+    <a class="btn btn-lg btn-primary" href="{% url 'learning_logs:new_entry_end' topic.id %}" role="button">Add new END entry</a>
   </p>
 <form action="{% url 'learning_logs:topic' topic.id %}" method="post" class="form">
         {% csrf_token %}
         <input type="text" name="search" class="form-control mb-4" placeholder="在这里检索您的条目...">
 </form>
+
     {% for entry in entries %}
+    {% if entry.key_days == '0' and entry.key_days_middle == '0' and entry.key_days_end == '0' %}
+    <div class="card mb-3">
+      <h4 class="card-header">
+        {{ entry.date_added|date:'Y-m-d   ,  H:i' }}
+        <small>
+          <a href="{% url 'learning_logs:edit_entry' entry.id %}">
+            Edit now &raquo;
+          </a>
+        </small>
+      </h4>
+      <div class="card-body">
+        <h5>
+          Text:
+        </h5>
+          Please select the correct prediction time!
+      </div>
+    </div>
+    {% elif entry.key_days_middle != 'Middle' and entry.key_days_end != 'End' %}
     <div class="card mb-3">
       <h4 class="card-header">
         {{ entry.date_added|date:'Y-m-d   ,  H:i' }}
@@ -44,6 +65,63 @@
           {{ entry.user_retention|linebreaks }}
       </div>
     </div>
+
+    {% elif entry.key_days_middle == 'Middle' %}
+
+        <div class="card mb-3">
+      <h4 class="card-header">
+        {{ entry.date_added|date:'Y-m-d   ,  H:i' }}
+        <small>
+          <a href="{% url 'learning_logs:edit_entry_middle' entry.id %}">
+            Edit now &raquo;
+          </a>
+        </small>
+      </h4>
+      <div class="card-body">
+        <h5>
+          Text:
+        </h5>
+          {{ entry.text|linebreaks }}
+        <h5>
+          Days:
+        </h5>
+          {{ entry.key_days_middle|linebreaks }}
+        <h5>
+          User retention:
+        </h5>
+          {{ entry.user_retention_middle|linebreaks }}
+      </div>
+    </div>
+    {% elif entry.key_days_end == 'End' %}
+
+        <div class="card mb-3">
+      <h4 class="card-header">
+        {{ entry.date_added|date:'Y-m-d   ,  H:i' }}
+        <small>
+          <a href="{% url 'learning_logs:edit_entry_end' entry.id %}">
+            Edit now &raquo;
+          </a>
+        </small>
+      </h4>
+      <div class="card-body">
+        <h5>
+          Text:
+        </h5>
+          {{ entry.text|linebreaks }}
+        <h5>
+          Days:
+        </h5>
+          {{ entry.key_days_end|linebreaks }}
+        <h5>
+          User retention:
+        </h5>
+          {{ entry.user_retention_end|linebreaks }}
+      </div>
+    </div>
+
+
+    {% endif %}
+
     {% empty %}
       <p>There are no entries for this topic yet.</p>
     {% endfor %}
